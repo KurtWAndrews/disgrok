@@ -47,13 +47,18 @@ Before you begin, ensure you have the following:
    ```bash
    git clone https://github.com/yourusername/your-bot-repo.git
    cd your-bot-repo
-
-   python -m venv venv
+   ```
+1. **Set Up a Virtual Environment** (recommended):
+```bash
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-pip install -r requirements.txt
-
-discord.py==2.3.2
-aiohttp==3.9.1
-python-dotenv==1.0.0
-
+python -m venv venv
+```
+1. Install Dependencies
+1. ```bash
+   pip install -r requirements.txt
+1. Add the following dependencies to ```Requirements.txt```
+   ```bash
+   discord.py==2.3.2
+   aiohttp==3.9.1
+   python-dotenv==1.0.0
+   ```
