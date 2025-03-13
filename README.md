@@ -44,21 +44,22 @@ Before you begin, ensure you have the following:
 ## Installation
 
 1. **Clone the Repository** (or download the source code):
+
    ```bash
    git clone https://github.com/yourusername/your-bot-repo.git
    cd your-bot-repo
    ```
+
 1. **Set Up a Virtual Environment** (recommended):
-```bash
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-python -m venv venv
-```
-1. Install Dependencies
-1. ```bash
-   pip install -r requirements.txt
-1. Add the following dependencies to ```Requirements.txt```
+
    ```bash
-   discord.py==2.3.2
-   aiohttp==3.9.1
-   python-dotenv==1.0.0
+   curl -sSL https://install.python-poetry.org | python3 - # Installs Poetry globally so you can use it (alternate to pip install poetry for chromeos linux container).
+   poetry init # Creates the pyproject.toml configuration file.
+   poetry add "aiohttp>=3.10,<3.10.11" # poetry won't add discord.py without aiohttp 3.10.10 or lower
+   poetry add discord.py # Declares discord.py as a dependency in pyproject.toml.
+   poetry install # Installs aiohttp and discord.py (and creates the virtual environment and lock file).
+   poetry run python bot.py # Runs your bot in the virtual environment with all dependencies available.
+
+   poetry self add poetry-plugin-export # add the export plugin to poetry
+   poetry export --without-hashes --format=requirements.txt --output=requirements.txt # create a requirements.txt for pip just in case
    ```

@@ -1,0 +1,74 @@
+{
+    "roles": [
+        {
+            "name": "Admin",
+            "color": "#FF0000",
+            "permissions": 8,
+            "hoist": true,
+            "mentionable": true
+        },
+        {
+            "name": "Member",
+            "color": "#00FF00",
+            "permissions": 0,
+            "hoist": false,
+            "mentionable": false
+        }
+    ],
+    "categories": [
+        {
+            "name": "General",
+            "position": 0,
+            "overwrites": {
+                "@everyone": {
+                    "view_channel": true,
+                    "send_messages": false
+                }
+            }
+        },
+        {
+            "name": "Voice Channels",
+            "position": 1,
+            "overwrites": {
+                "@everyone": {
+                    "view_channel": true,
+                    "connect": true
+                }
+            }
+        }
+    ],
+    "channels": {
+        "text": [
+            {
+                "name": "welcome",
+                "category": "General",
+                "topic": "Welcome to the server!",
+                "position": 0,
+                "overwrites": {
+                    "@everyone": {
+                        "view_channel": true,
+                        "send_messages": true
+                    }
+                }
+            },
+            {
+                "name": "general-chat",
+                "category": "General",
+                "position": 1
+            }
+        ],
+        "voice": [
+            {
+                "name": "General Voice",
+                "category": "Voice Channels",
+                "bitrate": 64000,
+                "user_limit": 0,
+                "position": 0
+            }
+        ]
+    },
+    "settings": {
+        "name": "My Awesome Server",
+        "description": "A cool Discord server"
+    }
+}
