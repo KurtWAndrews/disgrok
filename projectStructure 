@@ -1,0 +1,9 @@
+my_discord_bot/
+├── bot/
+│   ├── __init__.py
+│   ├── main.py         # Your bot's main logic
+│   └── commands.py     # Bot commands or logic to test
+├── tests/
+│   ├── __init__.py
+│   └── test_commands.py  # Your test file
+└── requirements.txt
