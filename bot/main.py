@@ -4,19 +4,29 @@ from discord.ext import commands
 import json
 import os
 from typing import Dict, List, Optional
+from dotenv import load_dotenv
+
+load_dotenv()
 
 intents = discord.Intents.default()
 intents.guilds = True
 intents.members = True
+intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-class ServerConfig:
+
+def get_token() -> str:
+    token = os.getenv("DISCORD_TOKEN")
+    if token:
+        return token
+
+
+""" class ServerConfig:
     def __init__(self, config_path: str = "server_config.json"):
         self.config_path = config_path
         self.config = self.load_config()
 
     def load_config(self) -> Dict:
-        """Load the configuration from JSON file"""
         try:
             with open(self.config_path, 'r') as f:
                 return json.load(f)
@@ -32,18 +42,23 @@ class ServerConfig:
             }
 
     def save_config(self):
-        """Save the current configuration to JSON file"""
         with open(self.config_path, 'w') as f:
-            json.dump(self.config, f, indent=4)
+            json.dump(self.config, f, indent=4) """
 
 @bot.event
 async def on_ready():
-    print(f'Bot connected as {bot.user}')
+    guild = discord.utils.find(lambda g: g.name == os.getenv("DISCORD_GUILD"), bot.guilds)
+    print(f'Bot connected as {bot.user} to {guild}')
 
-@bot.command()
+
+@bot.event
+async def on_message(message):
+    print(f'Message from {message.author}: {message.content}')
+
+
+"""@bot.command()
 @commands.has_permissions(administrator=True)
 async def setup(ctx):
-    """Configure the server based on JSON config"""
     config = ServerConfig()
     
     try:
@@ -64,7 +79,6 @@ async def setup(ctx):
         await ctx.send(f"Error during setup: {str(e)}")
 
 async def create_categories(guild: discord.Guild, categories: List[Dict]) -> Dict[str, discord.CategoryChannel]:
-    """Create categories and return a mapping of names to category objects"""
     category_map = {}
     existing_categories = {cat.name.lower(): cat for cat in guild.categories}
     
@@ -82,7 +96,6 @@ async def create_categories(guild: discord.Guild, categories: List[Dict]) -> Dic
     return category_map
 
 async def create_roles(guild: discord.Guild, roles: List[Dict]):
-    """Create roles from config"""
     existing_roles = {role.name.lower(): role for role in guild.roles}
     
     for role_config in roles:
@@ -96,7 +109,6 @@ async def create_roles(guild: discord.Guild, roles: List[Dict]):
             )
 
 async def create_channels(guild: discord.Guild, channels: Dict, category_map: Dict[str, discord.CategoryChannel]):
-    """Create channels from config with category support"""
     # Create text channels
     for channel_config in channels.get("text", []):
         category = category_map.get(channel_config.get("category")) if channel_config.get("category") else None
@@ -121,7 +133,6 @@ async def create_channels(guild: discord.Guild, channels: Dict, category_map: Di
         )
 
 async def apply_settings(guild: discord.Guild, settings: Dict):
-    """Apply server settings from config"""
     if "name" in settings:
         await guild.edit(name=settings["name"])
     if "description" in settings:
@@ -134,5 +145,7 @@ async def setup_error(ctx, error):
     else:
         await ctx.send(f"An error occurred: {str(error)}")
 
+ """
+
 if __name__ == "__main__":
-    bot.run('YOUR_BOT_TOKEN_HERE')
+    bot.run(get_token())
