@@ -127,14 +127,14 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-# Environments
+# Environments (files and directories related to venv are not in the project directories with the default poetry behaviour)
 .env
-.venv
+# .venv
 env/
-venv/
+# venv/
 ENV/
 env.bak/
-venv.bak/
+# venv.bak/
 
 # Spyder project settings
 .spyderproject
