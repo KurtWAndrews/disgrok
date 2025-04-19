@@ -171,4 +171,4 @@ cython_debug/
 .pypirc
 
 # disgrok specific ignores
-scratch/
+./scratch/
