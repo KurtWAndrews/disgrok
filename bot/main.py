@@ -1,9 +1,10 @@
 # bot.py
-import discord
-from discord.ext import commands
 import json
 import os
 from typing import Dict, List, Optional
+
+import discord
+from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,8 +16,19 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 
-def get_token() -> str:
-    token = os.getenv("DISCORD_TOKEN")
+def get_token(api_token: str) -> str:
+    """Returns the requested API token
+
+    Args:
+        api_token (str): Identifies which API token to return
+    
+    TODO:
+        Need a more secure solution for API tokens than storing them in the environment
+
+    Returns:
+        str: The requested API token
+    """    
+    token = os.getenv(api_token)
     if token:
         return token
 
@@ -47,12 +59,27 @@ def get_token() -> str:
 
 @bot.event
 async def on_ready():
+    """ on_ready event handler
+
+    Execute any code that has to wait until the bot is connected to the Discord server (guild). For now, the bot is 
+    just letting us know it's connected by displaying the server name.
+
+    TODO:
+        * Remove this code and replace it with useful business logic
+    """
     guild = discord.utils.find(lambda g: g.name == os.getenv("DISCORD_GUILD"), bot.guilds)
     print(f'Bot connected as {bot.user} to {guild}')
 
 
 @bot.event
-async def on_message(message):
+async def on_message(message: discord.Message):
+    """on_message event handler
+
+     For now just display some message attributes of messages sent to the bot.
+
+    Args:
+        message (discord.Message): an instance of a Discord message object
+    """
     print(f'Message from {message.author}: {message.content}')
 
 
@@ -148,4 +175,4 @@ async def setup_error(ctx, error):
  """
 
 if __name__ == "__main__":
-    bot.run(get_token())
+    bot.run(get_token('DISCORD_TOKEN'))
