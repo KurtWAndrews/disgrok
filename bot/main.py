@@ -21,13 +21,13 @@ def get_token(api_token: str) -> str:
 
     Args:
         api_token (str): Identifies which API token to return
-    
+
     TODO:
         Need a more secure solution for API tokens than storing them in the environment
 
     Returns:
         str: The requested API token
-    """    
+    """
     token = os.getenv(api_token)
     if token:
         return token
@@ -61,7 +61,7 @@ def get_token(api_token: str) -> str:
 async def on_ready():
     """ on_ready event handler
 
-    Execute any code that has to wait until the bot is connected to the Discord server (guild). For now, the bot is 
+    Execute any code that has to wait until the bot is connected to the Discord server (guild). For now, the bot is
     just letting us know it's connected by displaying the server name.
 
     TODO:
@@ -87,20 +87,20 @@ async def on_message(message: discord.Message):
 @commands.has_permissions(administrator=True)
 async def setup(ctx):
     config = ServerConfig()
-    
+
     try:
         # Create categories first
         category_map = await create_categories(ctx.guild, config.config["categories"])
-        
+
         # Create roles
         await create_roles(ctx.guild, config.config["roles"])
-        
+
         # Create channels with category references
         await create_channels(ctx.guild, config.config["channels"], category_map)
-        
+
         # Apply server settings
         await apply_settings(ctx.guild, config.config["settings"])
-        
+
         await ctx.send("Server configuration completed successfully!")
     except Exception as e:
         await ctx.send(f"Error during setup: {str(e)}")
@@ -108,7 +108,7 @@ async def setup(ctx):
 async def create_categories(guild: discord.Guild, categories: List[Dict]) -> Dict[str, discord.CategoryChannel]:
     category_map = {}
     existing_categories = {cat.name.lower(): cat for cat in guild.categories}
-    
+
     for cat_config in categories:
         if cat_config["name"].lower() not in existing_categories:
             category = await guild.create_category(
@@ -119,12 +119,12 @@ async def create_categories(guild: discord.Guild, categories: List[Dict]) -> Dic
             category_map[cat_config["name"]] = category
         else:
             category_map[cat_config["name"]] = existing_categories[cat_config["name"].lower()]
-    
+
     return category_map
 
 async def create_roles(guild: discord.Guild, roles: List[Dict]):
     existing_roles = {role.name.lower(): role for role in guild.roles}
-    
+
     for role_config in roles:
         if role_config["name"].lower() not in existing_roles:
             await guild.create_role(

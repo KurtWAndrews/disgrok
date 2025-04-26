@@ -119,4 +119,3 @@ Before you begin, ensure you have the following:
    ```zsh
    poetry env list # example output: disgrok-qIaQ169X-py3.13 (Activated)
    ```
-
